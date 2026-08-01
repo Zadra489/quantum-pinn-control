@@ -22,6 +22,10 @@ While I did not have direct experience with quantum mechanics, I am taking a qua
 
 I have been reading the textbook and building a comprehensive understanding of the topics needed for this projects, specifically the time-dependant Schrodinger equation and the Hamiltonian
 
+Quantum Control Resources:
+*Introduction to quantum control: From basic concepts to applications in quantum technologies* by Christiane P. Koch
+*Quantum Optimal Control Theory* by J. Werschnik and E.K.U. Gross
+
 ## Physics-Informed Neural Networks:
 
 While a normal neural networks learn from data and utilize the difference between the predicted value and expected value in the loss function, physics-informed neural networks utilize laws of physics which we know the model must uphold to be accurate. The advantage is that we can create more complex loss functions that into account various factors such as:
@@ -67,3 +71,4 @@ Libraries:
 - Scipy (to implement hamiltonian and schrodinger equation)
 - Matplotlib (to visualize results)
 - Jupyter (to record results and notes) 
+
