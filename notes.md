@@ -1,4 +1,4 @@
-# Physics-Informed Neural Networks for Quantum Control
+# Physics-Informed Neural Network for Quantum Control
 
 ## Project Goal:
 
@@ -71,4 +71,6 @@ Libraries:
 - Scipy (to implement hamiltonian and schrodinger equation)
 - Matplotlib (to visualize results)
 - Jupyter (to record results and notes) 
-
+- Pandas (Easier spreadhseet management)
+- tqdm (Progress Bar)
+- ipykernel (Assist notebooks)
