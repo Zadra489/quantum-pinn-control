@@ -43,13 +43,13 @@ While a normal neural networks learn from data and utilize the difference betwee
 
 # To Do:
 
-## Short Term:
+## Short Term (Phase 1):
 
 - Implement quantum two-level system simulator
 - Implement Hamiltonian definition and Schrodinger equation solver
 - Implement State evolution visualization
 
-# Long Term:
+# Long Term (Phase 2): 
 
 - Neural network architecture
 - Automatic differentiation
