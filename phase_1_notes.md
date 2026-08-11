@@ -14,9 +14,11 @@ I need to use the time-dependent Hamiltonian and time-dependent Schrodinger Equa
 
 In quantum_simulator.py, I will have functions with define the two level quantum state (having a 2x1 vector that allows complex units), the natural Hamiltonian (H_0), the control Hamiltonian (H_c), the control pulse (u(t)), and the Schrodinger equation (I am not writing it down in a markdown file like this, you know what it looks like).
 
+For my simple two-level implementation, I will only use the energy difference for the Hamiltonians as it simplifies debugging and simply uses a difference "frame of reference" (to add a classical analogy for what I am doing)
+
 I will then combine all these things into one function which solves how the quantum system evolves over time and perform basic tests to ensure it runs as expected.
 
-Thus, I will be implementing functions for ground states, excited states, H_0, H_c, c(t), schrodinger(t, psi), and quantum_evolution()
+Thus, I will be implementing functions for ground states, excited states, H_0, H_c, u(t), schrodinger(t, psi), and quantum_evolution()
 
 While I could implement my own implementation of imaginary numbers, I need to ensure all operations are *extremely* efficient due to how many times they will be performed while training. Thus, I will be using the pytorch implementation of vectors (via tensors) and their built in application of complex numbers as the pytorch library is optimized for efficient training. 
 
