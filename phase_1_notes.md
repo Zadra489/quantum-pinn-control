@@ -12,6 +12,8 @@ I need to use the time-dependent Hamiltonian and time-dependent Schrodinger Equa
 
 # Implementation:
 
+## Schrodinger Equation:
+
 In quantum_simulator.py, I will have functions with define the two level quantum state (having a 2x1 vector that allows complex units), the natural Hamiltonian (H_0), the control Hamiltonian (H_c), the control pulse (u(t)), and the Schrodinger equation (I am not writing it down in a markdown file like this, you know what it looks like).
 
 For my simple two-level implementation, I will only use the energy difference for the Hamiltonians as it simplifies debugging and simply uses a difference "frame of reference" (to add a classical analogy for what I am doing)
@@ -20,6 +22,12 @@ I will then combine all these things into one function which solves how the quan
 
 Thus, I will be implementing functions for ground states, excited states, H_0, H_c, u(t), schrodinger(t, psi), and quantum_evolution()
 
+## Implementation of Complex Numbers
+
 While I could implement my own implementation of imaginary numbers, I need to ensure all operations are *extremely* efficient due to how many times they will be performed while training. Thus, I will be using the pytorch implementation of vectors (via tensors) and their built in application of complex numbers as the pytorch library is optimized for efficient training. 
 
 I will use torch.complex32 for my initial implementation. While it does lack precision, it is much better on memory (and I just learned I will be forced to run this project on a laptop with 8gb on ddr3 for the next little bit due to unforseen circumstance :'). For a more refined version of the function (once I know everything works) to be used in the PINN, I will update it to torch.complex64 for more precision and if my training times are reasonable, torch.complex128 for even more precision to reduce systematic error and to ensure that all discrepancy with my desired results is due to the neural network when creating the loss function. 
+
+## Time-Evolution:
+
+In order to create an effective loss function for the AI, I need a method for solving the hamiltonian side of the schrodinger equation ()

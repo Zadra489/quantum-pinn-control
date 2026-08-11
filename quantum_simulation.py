@@ -35,5 +35,5 @@ def H(u, t):
     return H0() + u(t) * Hc() # the control function is the only one dependant on time
 
 def schrodinger_hamiltonian(t, psi): # schrodinger equation that uses hamiltonian and psi
-    return return -1j * H(t) @ psi # using psi for torch matric multiplication
+    return -1j * H(t) @ psi # using psi for torch matric multiplication
 
