@@ -1,12 +1,16 @@
 # Expirement Design:
 
-## For my initial implementation of the PINN, I will simulate the simplest possible quantum system, a closed two-level quantum system using the Schrodinger Equation
+## Initial Design
+
+For my initial implementation of the PINN, I will simulate the simplest possible quantum system, a closed two-level quantum system using the Schrodinger Equation
 
 I chose for the quantum system to be closed as it allows for me to study the effectiveness of the PINN for quantum control under ideal circumstance. While the original paper generated Gibbs states and implemented the Markovian master equation, I chose to implement a closed system instead to better isolate the effectiveness of the control algorithm without the complexity and interference of external factors. Additionally, I have found that modelling the system as being closed is standard for an introduction to quantum control and appropriate when the enviromental effects are negligible in small timeframes. 
 
 I chose for the quantum system to be two-level (aka electrons can only move between their base energy level and the next lowest energy level) as it simulates the conditions used in the original paper and is very common in the field of quantum control. It removes additional complexity from my expirementationa and allows me to simulate a quantum system while ensuring I have a low computing overhead, allowing for greater efficiency when training models. 
 
-## I will also implement the time-dependent Hamiltonian and the time-dependent Schrodinger Equation
+## Equations Used
+
+I will also implement the time-dependent Hamiltonian and the time-dependent Schrodinger Equation
 
 I need to use the time-dependent Hamiltonian and time-dependent Schrodinger Equation as the control input is inherently a function of time and thus the wave function also alters as a function of time. Therefore, it is necessary I implement the time-dependent Hamiltonian and time-dependent Schrodinger Equation. 
 
@@ -30,4 +34,27 @@ I will use torch.complex32 for my initial implementation. While it does lack pre
 
 ## Time-Evolution:
 
-In order to create an effective loss function for the AI, I need a method for solving the hamiltonian side of the schrodinger equation ()
+In order to create an effective loss function for the AI, I need a method for solving the hamiltonian side of the schrodinger equation (-1j * H(t) @ psi) for the sake of training. However, solving this explicitly is very computationally expensive so I will be using numerical methods.
+
+Given a set total time and time difference (as with any numerical method for ODEs), I want the evolution function to simulate how the schrodinger equation evolves over time from the initial state to it's final state, capturing it's progress over time.
+
+As I will be evaluating Schrodinger's equation a lot, I want a method which is not computationally expensive and yet effective. I will thus use the improved Euler's method (as I learned in ESC103) as it creates far greater accuracy with minimal increase in computation cost compared to standard Euler's method and it is still stable and familiar to me. 
+
+Even though I previously implemented it in MATLAB, the Python implementation will be very similar.
+
+## Probabilities:
+In order for the wave function to represent probabilities, one must take the absolute (multiply it by the complex conjugate).
+From there, the integral of all probabilities over time must be one, so I shall implement basic functions allowing me to find the norm of the wave function such that I can normalize it in the future
+
+## Testing:
+I am currently on an old laptop running an i5-1035G1 with only 12GB of ram which struggles to run these tests. I will attempt to run my program on this laptop and if not, I will debug it without running it and move onto the next phase.
+
+# Next Steps:
+
+Now that I have created a numerical method to solve the wave function for a simple two-state closed system, I will use pytorch to create the wave function with a neural network and and use autograd (optimized as hell) to obtain the other side of the schrodinger equation, being the derivative of the wave function with respect to time. 
+
+With this, I have two sides of the Schrodinger Equation and solve the difference between the derivative of the wave function created with a neural network and the hamiltonian side of the schrodinger equation, which I just built to great accuracy thanks to using IEM (improved Euler's Method)
+
+The next phase is aimed at answering the following question: given u(t) which I will provide as a gaussian curve, can the PINN estimate the wave function?
+
+From there I will see if a PINN can appropriate u(t) to control the quantum system, though that comes later
