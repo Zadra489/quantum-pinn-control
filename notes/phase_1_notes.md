@@ -58,3 +58,11 @@ With this, I have two sides of the Schrodinger Equation and solve the difference
 The next phase is aimed at answering the following question: given u(t) which I will provide as a gaussian curve, can the PINN estimate the wave function?
 
 From there I will see if a PINN can appropriate u(t) to control the quantum system, though that comes later
+
+# After Testing:
+
+I just tested and refined quantum_simulation.py with a basic program to calculate the norm of a wave function. I had to make some basic changes (such as changing all types to complex64 because complex32 did not work for some reason) and fixing stupid bugs (remember kids, don't code on two hours of sleep).
+
+One major issue I had was my norm was stuck at 1.1414, far from my ideal of 1.0000. I figured that this would be due to the approximation done by numerical methods and I could improve by increasing the fidelity of my approximation. I decreased my dt value from 0.1 to 0.01, which decreased my final norm from 1.1414 to 1.0001. Thus, I will use a dt value of 0.01 as my norm value has an uncertainty of 0.01% as opposed to 14%. 
+
+With this testing done, I have verified that quantum_simulation.py works and I will move onto the basis for my PINN for phase 2
