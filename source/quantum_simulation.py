@@ -1,21 +1,22 @@
 import torch
 
 def ground_states():
-    x = torch.tensor([1,0], dtype=torch.complex32) #Complex32 for simplicity
+    x = torch.tensor([1,0], dtype=torch.complex64) #Complex32 for simplicity
     return x
 
 def excited_states():
-    x = torch.tensor([0,1], dtype=torch.complex32)
+    x = torch.tensor([0,1], dtype=torch.complex64)
     return x
 
 def H_0(energy_gap = 1.0): #Use energy gap instead of unique energies to simplify calculations
     x = torch.tensor([
             [0.0, 0.0],
             [0.0, energy_gap]],
-        dtype=torch.complex32)
+        dtype=torch.complex64)
     return x
 
 def H_c():
+    strength = 1
     x = strength * torch.tensor([ #Don't need input variable since u(t) controls it's amplitude anyways
         [0.0, 1.0],
         [1.0, 0.0]],
@@ -24,7 +25,7 @@ def H_c():
     return x
 
 def u(t, A  = 5.0, d = 2.0, k = 1.0):
-    x = A * torch.exp( -((t - center) ** 2) / (width ** 2))
+    x = A * torch.exp( -((t - d) ** 2) / (k ** 2))
     return x
 
     # Here, A is vertical stretch, d is horizontal shift, and k is horizontal compression.
@@ -32,15 +33,16 @@ def u(t, A  = 5.0, d = 2.0, k = 1.0):
     # I forgot which article on physicslibre texts I read that from but it was somewhere
 
 def H(u, t):
-    return H0() + u(t) * Hc() # the control function is the only one dependant on time
+    return H_0() + u(t) * H_c() # the control function is the only one dependant on time
 
 def schrodinger_hamiltonian(t, psi): # schrodinger equation that uses hamiltonian and psi
-    return -1j * H(t) @ psi # using psi for torch matric multiplication
+    return -1j * H(u, t) @ psi # using psi for torch matric multiplication
 
-def time_evolution(T=10.0, dt=0.1,psi_0):
+def time_evolution(psi_0, T=10.0, dt=0.1):
     psi = psi_0.clone()
     states = [psi.clone()]
     times=[0.0]
+    t = 0
 
     while (t<T):
         slope_1 = schrodinger_hamiltonian(torch.tensor(t),psi) 
@@ -63,3 +65,17 @@ def norm(psi):
     x = torch.sum(probability(psi)) 
     return x #Is this inefficient for ram?
     #Find the sum of all proabilities for each value of t so we can normalize it and all probabilities add up to 1
+
+if __name__ == "__main__": ## TESTING
+    psi0 = ground_states()
+
+    times, states = time_evolution(psi0)
+
+    print("Final state:")
+    print(states[-1])
+
+    print("\nFinal probabilities:")
+    print(probability(states[-1]))
+
+    print("\nFinal norm:")
+    print(norm(states[-1]))

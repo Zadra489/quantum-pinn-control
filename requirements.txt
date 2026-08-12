@@ -2,8 +2,3 @@ numpy
 scipy
 matplotlib
 torch
-jupyter
-notebook
-pandas
-tqdm
-ipykernel
