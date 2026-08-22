@@ -14,3 +14,17 @@ Overall, I want to see if a neural network can learn what a quantum system does 
 
 # PINN Design:
 
+I am trying to create a system that attempts to learn | psi(t) > given t, where the column vector of the wave function is represented as [ c_0 (t) , c_1 (t) ] for some functions of t. 
+
+## Loss Function
+
+Given that we are trying to craft a loss function using the residual between the PINN output and the output of quantum_simulation.py, we can incorporate what we know from the Schrodinger equation to build out our residual. Since the PINN calculates one side of the Schrodinger equation and quantum_simulation.py calculates the other half, we can subtract them to calculate the error of the PINN.
+
+Additionally, we can use the boundry conditions to reinforce training for the PINN. Since the beginning and end states are known, we can apply the MSE between the actual and prediced boundry points to the PINN.
+
+Lastly, we know that the norm of the wave function must be one (because that's how probability works) so thus we can use the MSE between the calculated norm of the wave function produced by the PINN and the intended answer (1) to further reinforce training to be accurate for the PINN. 
+
+In order to add all the loss functions, we can E
+
+
+
