@@ -16,6 +16,8 @@ Overall, I want to see if a neural network can learn what a quantum system does 
 
 I am trying to create a system that attempts to learn | psi(t) > given t, where the column vector of the wave function is represented as [ c_0 (t) , c_1 (t) ] for some functions of t. 
 
+However, both of these components of the wave function are complex numbers. Thus, in order to decrease the computational complexity of the program, I will reprecent it as a 2x2 matrix where each column is a row vector for the real and imaginary components of that point. 
+
 ## Loss Function
 
 Given that we are trying to craft a loss function using the residual between the PINN output and the output of quantum_simulation.py, we can incorporate what we know from the Schrodinger equation to build out our residual. Since the PINN calculates one side of the Schrodinger equation and quantum_simulation.py calculates the other half, we can subtract them to calculate the error of the PINN. Since the wave function is many points, we can find the standard deviation between the PINN and quantum_simulation.py as the residual.
@@ -27,4 +29,13 @@ Lastly, we know that the norm of the wave function must be one (because that's h
 We then add all the losses to create a single loss function. We could remove any of the loss conditions or create coefficients between the loss terms ... and I don't know how that would affect the accuracy of the model so I shall try to test that out
 
 
+## Physics Residual:
+
+The main component of the loss function exists to ensure the solution matches the Schrodinger equation, using the calculations creating in quantum_simulation.py
+
+I will use quantum_simulation.py to make pinn.py more effective. Other than that, all I have to implement is autograd to calculate the other side of the Schrodinger equation
+
+## Hamiltonian:
+
+The research paper I am basing this project around uses a weird Hamiltonian ... for now I think I will try to implement making the Hamiltonian as an input variable but if that is not possible then I will use a simple matrix (based off of bloch spheres I suppose) for the time being, ensuring my PINN works in the first place
 
