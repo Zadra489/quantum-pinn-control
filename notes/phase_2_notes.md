@@ -39,3 +39,10 @@ I will use quantum_simulation.py to make pinn.py more effective. Other than that
 
 The research paper I am basing this project around uses a weird Hamiltonian ... for now I think I will try to implement making the Hamiltonian as an input variable but if that is not possible then I will use a simple matrix (based off of bloch spheres I suppose) for the time being, ensuring my PINN works in the first place
 
+Ok so after further research I found out that the Hamiltonian the paper uses is (bare with me as I use latex without a latex thing but you can probably read this anyways so it's ok):
+H(t) = w_z \sigma_z + w_x \sigma_x + \zeta (t) \sigma_{ee} 
+
+the sigma terms obviously refer to base matricies which have visual corelations via Bloch spheres. The coefficients are system parameters, and thus will be put as inputs to the Hamiltonian function. The final term is essential, as it encodes the unknown control field and prevents the Hamiltonian from being constant. 
+
+\sigma_{ee} is new notation from this paper and represents " Quantum transitions can be written in terms of the operators σij = |i⟩⟨j| (i, j = e, g) being |e⟩ (|g⟩) the excited (ground) state."
+
