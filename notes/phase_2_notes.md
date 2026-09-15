@@ -35,6 +35,8 @@ The main component of the loss function exists to ensure the solution matches th
 
 I will use quantum_simulation.py to make pinn.py more effective. Other than that, all I have to implement is autograd to calculate the other side of the Schrodinger equation
 
+# Physics Background
+
 ## Hamiltonian:
 
 The research paper I am basing this project around uses a weird Hamiltonian ... for now I think I will try to implement making the Hamiltonian as an input variable but if that is not possible then I will use a simple matrix (based off of bloch spheres I suppose) for the time being, ensuring my PINN works in the first place
@@ -45,4 +47,23 @@ H(t) = w_z \sigma_z + w_x \sigma_x + \zeta (t) \sigma_{ee}
 the sigma terms obviously refer to base matricies which have visual corelations via Bloch spheres. The coefficients are system parameters, and thus will be put as inputs to the Hamiltonian function. The final term is essential, as it encodes the unknown control field and prevents the Hamiltonian from being constant. 
 
 \sigma_{ee} is new notation from this paper and represents " Quantum transitions can be written in terms of the operators σij = |i⟩⟨j| (i, j = e, g) being |e⟩ (|g⟩) the excited (ground) state."
+
+Therefore, \sigma_{ee} = [1 & 0, 0 & 0]. This makes sense because the control function only affects the excited states, as represented by the only nonzero term being in the control vector.  \sigma_z and \sigma_x are already known, as the pauli matricies for x and z respectively. 
+
+For the implementation into code, I will do the math on my side and then implement the differential equations into the code
+
+Given the math above, the final hamiltonian becomes:
+H(t) = [w_z + ctrl(t) & w_x , w_x & -w_z] = w_z \sigma_z + w_x \sigma_x + \zeta (t) \sigma_{ee} 
+The first term on the RHS represents the energy difference between the excited and ground states
+The second term on the RHS represents the energy coupling
+The last term on the RHS is the control field that effects the excited state
+
+## Schrodinger Equation with Hamiltonian:
+
+Since I am splitting the components for the real and imaginary components of the grounded and excited states, I will need four equations to fully represent the system
+
+Given the Hamiltonian provided above, I create the loss function of:
+R(t) = d(psi) / dt + iH(t) psi(t)
+The network produces complex coefficients for the states of the wave equation, meaning I am left with four real outputs
+
 

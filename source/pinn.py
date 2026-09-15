@@ -1,12 +1,14 @@
 import torch 
+import torch.nn as nn
 import quantum_simulation
-
-
 
 class PINN(torch.nn.Module):
     
-    def __init__(self, hidden_size = 64):
+    def __init__(self, hidden_size = 64, w_x=1.0, w_z=1.0):
         super().__init__()
+
+        self.w_x = w_x
+        self.w_z = w_z
 
         self.network = nn.Sequential(
             nn.Linear(1, hidden_size),
@@ -35,16 +37,25 @@ class PINN(torch.nn.Module):
 
         return torch.stack([c0, c1], dim=1)
 
-    def hamiltonian (self, t):
-        
-        # Depends on Hamiltonian ... What Hamiltonian do I use?
-        # I could make this Hamiltonian an input variable so that this algorithm is more flexible
-        pass
+    def ctrl(t):
+        return torch.tanh(t) 
+
+    def hamiltonian (self, ctrl_fn = None):
+        sigma_x = torch.tensor([[0,1],[1,0]],dtype=torch.complex64)
+        sigma_z = torch.tensor([[1,0],[0,-1]],dtype=torch.complex64)
+        sigma_ee = torch.tensor([[1,0],[0,0]],dtype=torch.complex64)
+        if ctrl_fn is None:
+            ctrl = torch.zeros_like(t)
+        else:
+            ctrl = ctrl_fn(t)
+        H_t = (w_z*sigma_z + w_x*sigma_x + ctrl[:,None, None]*sigma_ee)
+        return H_t
 
     def physics_residual(self, t):
 
         # Calculate the derivative of the wave function plus i H(t) psi(t) = 0
-
+        Schrodinger_LHS = torch.autograd.grad(wavefunction(t))
+        Schrodinger_RHS = torch.prod(hamiltonian(t),quantum_simulation.schrodinger_hamiltonian(psi, t))
         pass
 
     def physics_loss (self, t):
